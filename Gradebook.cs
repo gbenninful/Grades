@@ -5,7 +5,35 @@ namespace Grades
 {
     class Gradebook
     {
-       private List<float> grades;
+        private List<float> grades;
+
+        private string _name;
+
+        public NamedChangeDelegate NameChanged;
+
+        public string Name
+        {
+
+            get
+            {
+                return _name;
+            }
+
+            set
+            {
+                if (_name != value)
+                {
+                    var oldValue = _name;
+                    _name = value;
+
+                    if (NameChanged != null)
+                    {
+                        NameChanged(oldValue, value);
+                    }
+                }
+
+            }
+        }
 
         public Gradebook()
         {
@@ -42,7 +70,9 @@ namespace Grades
             }
 
             stats.AverageGrade = sum / grades.Count;
-            
+
+
+
             return stats;
         }
     }
