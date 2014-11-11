@@ -40,6 +40,12 @@ namespace Grades
             grades = new List<float>();
         }
 
+        public Gradebook(string name)
+        {
+            grades = new List<float>();
+            Name = name;
+        }
+
         public void AddGrade(float grade)
         {
             if (grade >= 0 && grade <= 100)
@@ -70,8 +76,6 @@ namespace Grades
             }
 
             stats.AverageGrade = sum / grades.Count;
-
-
 
             return stats;
         }
