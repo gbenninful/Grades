@@ -1,73 +1,44 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Grades
 {
-    class Gradebook
+    public class Gradebook : GradeTracker, IEnumerable
     {
-        private List<float> grades;
-
-        private string _name;
-
-        public NamedChangeDelegate NameChanged;
-
-        public string Name
-        {
-
-            get
-            {
-                return _name;
-            }
-
-            set
-            {
-                if (_name != value)
-                {
-                    var oldValue = _name;
-                    _name = value;
-
-                    if (NameChanged != null)
-                    {
-                        NameChanged(oldValue, value);
-                    }
-                }
-
-            }
-        }
+        protected List<float> _grades;
 
         public Gradebook()
         {
-            grades = new List<float>();
+            _grades = new List<float>();
         }
 
         public Gradebook(string name)
         {
-            grades = new List<float>();
+            Console.WriteLine("GradeBook ctor");
+            _grades = new List<float>();
             Name = name;
         }
 
-        public void AddGrade(float grade)
+        public override void AddGrade(float grade)
         {
             if (grade >= 0 && grade <= 100)
             {
-                grades.Add(grade);
+                _grades.Add(grade);
             }
         }
 
 
-        public GradeStatistics ComputeStatistics()
+        public override GradeStatistics ComputeStatistics()
         {
+            Console.WriteLine("Gradebook Compute statistics method");
             GradeStatistics stats = new GradeStatistics();
 
             float sum = 0f;
 
-            foreach (float grade in grades)
+            foreach (float grade in _grades)
             {
-                //if (grade > stats.HighestGrade)
-                //{
-                //    stats.HighestGrade = grade;
-                //}
-
                 stats.HighestGrade = Math.Max(grade, stats.HighestGrade);
 
                 stats.LowestGrade = Math.Min(grade, stats.LowestGrade);
@@ -75,9 +46,31 @@ namespace Grades
                 sum += grade;
             }
 
-            stats.AverageGrade = sum / grades.Count;
+            stats.AverageGrade = sum / _grades.Count;
 
             return stats;
+        }
+
+        public override void WriteGrades(TextWriter textWriter)
+        {
+            textWriter.WriteLine("Here are your Grades: ");
+
+            foreach (float grade in _grades)
+            {
+                textWriter.WriteLine(grade);
+            }
+
+            textWriter.WriteLine("\n");
+        }
+
+        public override void DoSomething()
+        {
+            Console.WriteLine("I'm doing something!!!");
+        }
+
+        public override IEnumerator GetEnumerator()
+        {
+            return _grades.GetEnumerator();
         }
     }
 }

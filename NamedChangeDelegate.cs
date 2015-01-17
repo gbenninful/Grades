@@ -6,6 +6,5 @@ using System.Threading.Tasks;
 
 namespace Grades
 {
-    public delegate void NamedChangeDelegate(string oldValue, string newValue);
-
+    public delegate void NamedChangeDelegate(object sender, NameChangedEventArgs args);
 }
